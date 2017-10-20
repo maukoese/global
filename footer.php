@@ -2,13 +2,18 @@
       </div>
     </div>
   </div>
-  <ul class="outer-nav">
-    <li class="is-active">Home</li>
-    <li>Works</li>
-    <li>About</li>
-    <li>Contact</li>
-    <li>Hire us</li>
-  </ul>
+  <ul class="outer-nav" style="color: blue;">
+    <style type="text/css">
+      a {
+        color: blue;
+      }
+    </style>
+    <li class=""><a class="" href="<?php echo get_option('home'); ?>"><span>Home</span></a></li>
+    <li class=""><a class="" href="<?php echo get_option('home'); ?>/portfolio"><span>Works</span></a></li>
+    <li class=""><a class="" href="<?php echo get_option('home'); ?>/about"><span>About</span></a></li>
+    <li class=""><a class="" href="<?php echo get_option('home'); ?>/find"><span>Find Me</span></a></li>
+    <li class=""><a class="" href="<?php echo get_option('home'); ?>/contact"><span>Hire me</span></a></li>
+</ul>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

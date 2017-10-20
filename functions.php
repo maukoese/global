@@ -4,7 +4,6 @@ function jabaliAssets() {
   wp_enqueue_style( 'theme-style', get_stylesheet_directory_uri().'/assets/css/main.css' );
 
   wp_enqueue_script( 'jquery', get_stylesheet_directory_uri() . '/assets/js/vendor/jquery-3.2.1.js', array( ) );
-  wp_enqueue_script( 'hammer', get_stylesheet_directory_uri() . '/assets/js/vendor/hammer-2.0.8.js', array() );
   wp_enqueue_script( 'functions', get_stylesheet_directory_uri() . '/assets/js/functions-min.js', array() );
 }
 
@@ -60,6 +59,7 @@ function global_about_page(){ ?>
     <form method="post" action="options.php">
         <?php
             settings_fields("section");
+            settings_fields("section1");
             settings_fields("section2");
             settings_fields("section3");
 
@@ -75,9 +75,32 @@ function add_global_menu_item()
 	add_menu_page("Global Theme", "Global Theme", "manage_options", "global-panel", "global_settings_page", null, 99);
 	add_submenu_page( 'global-panel', 'Home Page Sections', 'Home Page', 'manage_options', 'global-panel');
 	add_submenu_page( 'global-panel', 'About Page Sections', 'About Page', 'manage_options', 'global_about', 'global_about_page');
+	add_submenu_page( 'global-panel', 'Misc Sections', 'Miscelleneous', 'manage_options', 'global_misc', 'global_about_page');
 }
 
 add_action("admin_menu", "add_global_menu_item");
+
+function display_text1_element()
+{
+	?>
+    	<textarea name="text1" id="twitter_url" ><?php echo get_option('twitter_url'); ?></textarea>
+    <?php
+}
+
+
+function display_text2_element()
+{
+	?>
+    	<textarea name="text2" id="twitter_url" ><?php echo get_option('twitter_url'); ?></textarea>
+    <?php
+}
+
+function display_text3_element()
+{
+	?>
+    	<textarea name="text3" id="twitter_url" ><?php echo get_option('twitter_url'); ?></textarea>
+    <?php
+}
 
 function display_twitter_element()
 {
@@ -93,12 +116,23 @@ function display_facebook_element()
     <?php
 }
 
+function display_f_panel_fields()
+{
+	add_settings_section("section", "Home Page Image", null, "global-options");
+	
+	add_settings_field("twitter_url", "Image Url", "display_twitter_element", "global-options", "section");
+
+    register_setting("section", "twitter_url");
+}
+
+add_action("admin_init", "display_f_panel_fields");
+
 function display_f1_panel_fields()
 {
-	add_settings_section("section", "Section One Fields", null, "global-options");
+	add_settings_section("section1", "Section One Fields", null, "global-options");
 	
-	add_settings_field("twitter_url", "Feature One Title", "display_twitter_element", "global-options", "section");
-    add_settings_field("facebook_url", "Feature One Text", "display_facebook_element", "global-options", "section");
+	add_settings_field("twitter_url", "Title", "display_twitter_element", "global-options", "section1");
+    add_settings_field("facebook_url", "Text", "display_text1_element", "global-options", "section1");
 
     register_setting("section", "twitter_url");
     register_setting("section", "facebook_url");
@@ -110,8 +144,8 @@ function display_f2_panel_fields()
 {
 	add_settings_section("section2", "Section Two Fields", null, "global-options");
 	
-	add_settings_field("twitter_url", "Feature One Title", "display_twitter_element", "global-options", "section2");
-    add_settings_field("facebook_url", "Feature One Text", "display_facebook_element", "global-options", "section2");
+	add_settings_field("twitter_url", "Title", "display_twitter_element", "global-options", "section2");
+    add_settings_field("facebook_url", "Text", "display_text2_element", "global-options", "section2");
 
     register_setting("section", "twitter_url");
     register_setting("section", "facebook_url");
@@ -123,42 +157,11 @@ function display_f3_panel_fields()
 {
 	add_settings_section("section3", "Section Three Fields", null, "global-options");
 	
-	add_settings_field("twitter_url", "Feature One Title", "display_twitter_element", "global-options", "section3");
-    add_settings_field("facebook_url", "Feature One Text", "display_facebook_element", "global-options", "section3");
+	add_settings_field("twitter_url", "Title", "display_twitter_element", "global-options", "section3");
+    add_settings_field("facebook_url", "Text", "display_text3_element", "global-options", "section3");
 
     register_setting("section", "twitter_url");
     register_setting("section", "facebook_url");
 }
 
 add_action("admin_init", "display_f3_panel_fields");
-
-function logo_display()
-{
-	?>
-        <input type="file" name="logo" /> 
-        <?php echo get_option('logo'); ?>
-   <?php
-}
-
-function handle_logo_upload()
-{
-	if(!empty($_FILES["demo-file"]["tmp_name"]))
-	{
-		$urls = wp_handle_upload($_FILES["logo"], array('test_form' => FALSE));
-	    $temp = $urls["url"];
-	    return $temp;   
-	}
-	  
-	return $option;
-}
-
-function display_theme_panel_fields()
-{
-	add_settings_section("section4", "Home Page Image Options", null, "global-options");
-	
-    add_settings_field("logo", "Image", "logo_display", "global-options", "section4");  
-
-    register_setting("section", "logo", "handle_logo_upload");
-}
-
-add_action("admin_init", "display_theme_panel_fields");
